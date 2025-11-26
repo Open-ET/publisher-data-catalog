@@ -1,0 +1,30 @@
+# -------------------------
+# macOS system files
+# -------------------------
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon?
+._*
+.Spotlight-V100
+.Trashes
+*.swp
+
+# -------------------------
+# VS Code
+# -------------------------
+.vscode/
+.history/
+
+# -------------------------
+# Jsonnet / tooling
+# -------------------------
+*.jsonnet~
+*.libjsonnet~
+.tmp/
+
+# -------------------------
+# OS / Editor backup files
+# -------------------------
+*~
+*.orig
