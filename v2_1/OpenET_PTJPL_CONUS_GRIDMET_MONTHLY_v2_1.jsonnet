@@ -71,6 +71,11 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
         type: ee_const.var_type.string,
       },
       {
+        name: 'build_status',
+        description: 'Status can be "permanent" or "provisional".  Images flagged as "provisional" may be updated in the future.',
+        type: ee_const.var_type.string,
+      },
+      {
         name: 'cloud_cover_max',
         description: 'Maximum CLOUD_COVER_LAND percent value for Landsat images included in interpolation',
         type: ee_const.var_type.double,
@@ -104,6 +109,11 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
         name: 'et_reference_source',
         description: 'Collection ID for the daily reference ET data',
         type: ee_const.var_type.string,
+      },
+      {
+        name: 'image_source_count',
+        description: 'Number of scene images used in the interpolation',
+        type: ee_const.var_type.double,
       },
       {
         name: 'interp_days',
@@ -148,6 +158,11 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
       {
         name: 'start_date',
         description: 'Start date of month',
+        type: ee_const.var_type.string,
+      },
+      {
+        name: 'units_et',
+        description: 'Units of the "et" band',
         type: ee_const.var_type.string,
       },
     ],
