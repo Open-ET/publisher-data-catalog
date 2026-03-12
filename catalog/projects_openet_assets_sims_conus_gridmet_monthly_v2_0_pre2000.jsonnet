@@ -1,6 +1,6 @@
-local id = 'OpenET/SIMS/CONUS/GRIDMET/MONTHLY/v2_1';
-local subdir = 'OpenET';
-local version = '2.1';
+local id = 'projects/openet/asset/sims/conus_gridmet_monthly_v2_0_pre2000';
+local subdir = 'openet';
+local version = '2.0';
 
 local ee_const = import 'earthengine_const.libsonnet';
 local ee = import 'earthengine.libsonnet';
@@ -14,17 +14,9 @@ local base_filename = basename + '.json';
 local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
 
 {
-  stac_version: ee_const.stac_version,
-  type: ee_const.stac_type.collection,
-  stac_extensions: [
-    ee_const.ext_eo,
-    ee_const.ext_sci,
-    ee_const.ext_ver,
-  ],
   id: id,
   title: 'OpenET SIMS Monthly Evapotranspiration v' + version,
   version: version,
-  'gee:type': ee_const.gee_type.image_collection,
   description: |||
     Satellite Irrigation Management Support
 
@@ -66,7 +58,7 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
     are masked out in this data collection. Future research will extend the
     vegetation density-crop coefficient approach used within SIMS to other land
     cover types.
-    [Additional information](https://openetdata.org/methodologies/)
+    [Additional information](https://etdata.org/methods/)
   |||,
   license: license.id,
   links: ee.standardLinks(subdir, id),
@@ -80,20 +72,15 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
     'water'
   ],
   providers: [
-    ee.producer_provider('OpenET, Inc.', 'https://openetdata.org/'),
+    ee.producer_provider('OpenET, Inc.', 'https://etdata.org/'),
     ee.host_provider(self_ee_catalog_url),
   ],
-  extent: ee.extent(-126, 25, -66, 50, '2015-10-01T00:00:00Z', null),
+  extent: ee.extent(-126, 25, -86, 50, '1984-10-01T00:00:00Z', '1999-10-01T00:00:00Z'),
   summaries: {
     'gee:schema': [
       {
         name: 'build_date',
         description: 'Date assets were built',
-        type: ee_const.var_type.string,
-      },
-      {
-        name: 'build_status',
-        description: 'Status can be "permanent" or "provisional".  Images flagged as "provisional" may be updated in the future.',
         type: ee_const.var_type.string,
       },
       {
@@ -130,11 +117,6 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
         name: 'et_reference_source',
         description: 'Collection ID for the daily reference ET data',
         type: ee_const.var_type.string,
-      },
-      {
-        name: 'image_source_count',
-        description: 'Number of scene images used in the interpolation',
-        type: ee_const.var_type.double,
       },
       {
         name: 'interp_days',
@@ -179,11 +161,6 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
       {
         name: 'start_date',
         description: 'Start date of month',
-        type: ee_const.var_type.string,
-      },
-      {
-        name: 'units_et',
-        description: 'Units of the "et" band',
         type: ee_const.var_type.string,
       },
     ],
@@ -283,6 +260,14 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
     unit: 'month',
     interval: 1,
   },
+  'gee:status': 'beta',
   'gee:terms_of_use': ee.gee_terms_of_use(license),
-  'gee:user_uploaded': true,
+  'gee:type': ee_const.gee_type.image_collection,
+  stac_version: ee_const.stac_version,
+  type: ee_const.stac_type.collection,
+  stac_extensions: [
+    ee_const.ext_eo,
+    ee_const.ext_sci,
+    ee_const.ext_ver,
+  ],
 }

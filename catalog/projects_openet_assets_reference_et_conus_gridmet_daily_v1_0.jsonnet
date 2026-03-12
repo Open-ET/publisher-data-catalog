@@ -1,6 +1,6 @@
 TODO: Decide if version in ID should be "v1_0" or "v1" (the current collection ID is just "v1")
-local id = 'OpenET/REFERENCE_ET/CONUS/GRIDMET/MONTHLY/v1_0';
-local subdir = 'OpenET';
+local id = 'projects/openet/asset/REFERENCE_ET/CONUS/GRIDMET/DAILY/v1_0';
+local subdir = 'openet';
 local version = '1.0';
 
 local ee_const = import 'earthengine_const.libsonnet';
@@ -15,21 +15,13 @@ local base_filename = basename + '.json';
 local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
 
 {
-  stac_version: ee_const.stac_version,
-  type: ee_const.stac_type.collection,
-  stac_extensions: [
-    ee_const.ext_eo,
-    ee_const.ext_sci,
-    ee_const.ext_ver,
-  ],
   id: id,
-  title: 'OpenET Bias Corrected GRIDMET Monthly Reference Evapotranspiration v' + version,
+  title: 'OpenET Bias Corrected GRIDMET Daily Reference Evapotranspiration v' + version,
   version: version,
-  'gee:type': ee_const.gee_type.image_collection,
   description: |||
-    TODO: Write a description of the dataset
+    TODO: Write a description!
 
-    [Additional information](https://openetdata.org/methodologies/)
+    [Additional information](https://etdata.org/methods/)
   |||,
   license: license.id,
   links: ee.standardLinks(subdir, id),
@@ -37,12 +29,11 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
     'conus',
     'evapotranspiration',
     'gridmet_derived',
-    'monthly',
     'openet',
     'water',
   ],
   providers: [
-    ee.producer_provider('OpenET, Inc.', 'https://openetdata.org/'),
+    ee.producer_provider('OpenET, Inc.', 'https://etdata.org/'),
     ee.host_provider(self_ee_catalog_url),
   ],
   extent: ee.extent(-126, 25, -66, 50, '1979-01-01T00:00:00Z', null),
@@ -54,43 +45,18 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
         type: ee_const.var_type.string,
       },
       {
-        name: 'early',
-        description: 'Number of "early" status daily images used to generate monthly total"',
-        type: ee_const.var_type.string,
-      },
-      {
         name: 'eto_source_data_version',
-        description: 'Bias correction ratio version summary of the daily source "eto" images',
+        description: 'Monthly bias correction ratio version',
         type: ee_const.var_type.string,
       },
       {
         name: 'etr_source_data_version',
-        description: 'Bias correction ratio version summary of the daily source "etr" images',
+        description: 'Monthly bias correction ratio version',
         type: ee_const.var_type.string,
-      },
-      {
-        name: 'permanent',
-        description: 'Number of "permanent" status daily images used to generate monthly total"',
-        type: ee_const.var_type.string,
-      },
-      {
-        name: 'provisional',
-        description: 'Number of "provisional" status daily images used to generate monthly total"',
-        type: ee_const.var_type.string,
-      },
-      {
-        name: 'scale_factor_eto',
-        description: 'Scaling factor that should be applied to the "eto" band',
-        type: ee_const.var_type.double,
-      },
-      {
-        name: 'scale_factor_etr',
-        description: 'Scaling factor that should be applied to the "etr" band',
-        type: ee_const.var_type.double,
       },
       {
         name: 'status',
-        description: '"permanent" or "provisional"',
+        description: 'GRIDMET daily build status: "early", "permanent", or "provisional"',
         type: ee_const.var_type.string,
       },
       {
@@ -154,9 +120,17 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
    ],
   'gee:interval': {
     type: 'cadence',
-    unit: 'month',
+    unit: 'day',
     interval: 1,
   },
+  'gee:status': 'beta',
   'gee:terms_of_use': ee.gee_terms_of_use(license),
-  'gee:user_uploaded': true,
+  'gee:type': ee_const.gee_type.image_collection,
+  stac_version: ee_const.stac_version,
+  type: ee_const.stac_type.collection,
+  stac_extensions: [
+    ee_const.ext_eo,
+    ee_const.ext_sci,
+    ee_const.ext_ver,
+  ],
 }

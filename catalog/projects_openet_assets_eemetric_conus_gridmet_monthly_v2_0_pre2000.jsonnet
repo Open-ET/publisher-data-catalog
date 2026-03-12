@@ -1,5 +1,5 @@
-local id = 'OpenET/EEMETRIC/CONUS/GRIDMET/MONTHLY/v2_0_pre2000';
-local subdir = 'OpenET';
+local id = 'projects/openet/asset/EEMETRIC/conus_gridmet_monthly_v2_0_pre2000';
+local subdir = 'openet';
 local version = '2.0';
 
 local ee_const = import 'earthengine_const.libsonnet';
@@ -14,17 +14,9 @@ local base_filename = basename + '.json';
 local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
 
 {
-  stac_version: ee_const.stac_version,
-  type: ee_const.stac_type.collection,
-  stac_extensions: [
-    ee_const.ext_eo,
-    ee_const.ext_sci,
-    ee_const.ext_ver,
-  ],
   id: id,
   title: 'OpenET eeMETRIC Monthly Evapotranspiration v' + version,
   version: version,
-  'gee:type': ee_const.gee_type.image_collection,
   description: |||
     Google Earth Engine implementation of the Mapping Evapotranspiration
     at high Resolution with Internalized Calibration model (eeMETRIC)
@@ -79,7 +71,7 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
     Collection 2 Level 2, with fallback to Collection 2 Level 1 when needed for
     near real-time estimates.
 
-    [Additional information](https://openetdata.org/methodologies/)
+    [Additional information](https://etdata.org/methods/)
   |||,
   license: license.id,
   links: ee.standardLinks(subdir, id),
@@ -93,10 +85,10 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
     'water',
   ],
   providers: [
-    ee.producer_provider('OpenET, Inc.', 'https://openetdata.org/'),
+    ee.producer_provider('OpenET, Inc.', 'https://etdata.org/'),
     ee.host_provider(self_ee_catalog_url),
   ],
-  extent: ee.extent(-126, 25, -66, 50, '1984-10-01T00:00:00Z', '1999-10-01T00:00:00Z'),
+  extent: ee.extent(-126, 25, -86, 50, '1984-10-01T00:00:00Z', '1999-10-01T00:00:00Z'),
   summaries: {
     'gee:schema': [
       {
@@ -341,6 +333,14 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
     unit: 'month',
     interval: 1,
   },
+  'gee:status': 'beta',
   'gee:terms_of_use': ee.gee_terms_of_use(license),
-  'gee:user_uploaded': true,
+  'gee:type': ee_const.gee_type.image_collection,
+  stac_version: ee_const.stac_version,
+  type: ee_const.stac_type.collection,
+  stac_extensions: [
+    ee_const.ext_eo,
+    ee_const.ext_sci,
+    ee_const.ext_ver,
+  ],
 }

@@ -1,6 +1,6 @@
-local id = 'OpenET/PTJPL/CONUS/GRIDMET/MONTHLY/v2_1';
-local subdir = 'OpenET';
-local version = '2.1';
+local id = 'projects/openet/asset/ssebop/conus_gridmet_monthly_v2_0';
+local subdir = 'openet';
+local version = '2.0';
 
 local ee_const = import 'earthengine_const.libsonnet';
 local ee = import 'earthengine.libsonnet';
@@ -14,38 +14,36 @@ local base_filename = basename + '.json';
 local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
 
 {
-  stac_version: ee_const.stac_version,
-  type: ee_const.stac_type.collection,
-  stac_extensions: [
-    ee_const.ext_eo,
-    ee_const.ext_sci,
-    ee_const.ext_ver,
-  ],
   id: id,
-  title: 'OpenET PT-JPL Monthly Evapotranspiration v' + version,
+  title: 'OpenET SSEBop Monthly Evapotranspiration v' + version,
   version: version,
-  'gee:type': ee_const.gee_type.image_collection,
   description: |||
-    Priestley-Taylor Jet Propulsion Laboratory (PT-JPL)
+    Operational Simplified Surface Energy Balance (SSEBop)
 
-    The core formulation of the PT-JPL model within the OpenET framework has
-    not changed from the original formulation detailed in Fisher et al. (2008).
-    However, enhancements and updates to model inputs and time integration for
-    PT-JPL were made to take advantage of contemporary gridded weather datasets,
-    provide consistency with other models, improve open water evaporation
-    estimates, and account for advection over crop and wetland areas in
-    semiarid and arid environments. These changes include the use of
-    Landsat surface reflectance and thermal radiation for calculating net
-    radiation, photosynthetically active radiation, plant canopy and moisture
-    variables, and use of NLDAS, Spatial CIMIS, and gridMET weather data for
-    estimating insolation and ASCE reference ET. Similar to the implementation
-    of other OpenET models, estimation of daily and monthly time integrated
-    ET is based on the fraction of ASCE reference ET. Open water evaporation
-    is estimated following a surface energy balance approach of Abdelrady
-    et al. (2016) that is specific for water bodies by accounting for water
-    heat flux as opposed to soil heat flux.
+    The Operational Simplified Surface Energy Balance (SSEBop) model by Senay
+    et al. (2013, 2017) is a thermal-based simplified surface energy model for
+    estimating actual ET based on the principles of satellite psychrometry
+    (Senay 2018). The OpenET SSEBop implementation uses land surface temperature
+    (Ts) from Landsat (Collection 2 Level-2 Science Products) with key model
+    parameters (cold/wet-bulb reference, Tc, and surface psychrometric
+    constant, 1/dT) derived from a combination of observed surface temperature,
+    normalized difference vegetation index (NDVI), climatological average
+    (1980-2017) daily maximum air temperature (Ta, 1-km) from Daymet, and
+    net radiation data from ERA-5. This model implementation uses the Google
+    Earth Engine processing framework for connecting key SSEBop ET functions
+    and algorithms together when generating both intermediate and aggregated ET
+    results. A detailed study and evaluation of the SSEBop model across CONUS
+    (Senay et al., 2022) informs both cloud implementation and assessment for
+    water balance applications at broad scales. Notable model (v0.2.6)
+    enhancements and performance against previous versions include additional
+    compatibility with Landsat 9 (launched Sep 2021), global model
+    extensibility, and improved parameterization of SSEBop using
+    FANO (Forcing and Normalizing Operation) to better estimate ET
+    in all landscapes and all seasons regardless of vegetation cover density,
+    thereby improving model accuracy by avoiding extrapolation of Tc to
+    non-calibration regions.
 
-    [Additional information](https://openetdata.org/methodologies/)
+    [Additional information](https://etdata.org/methods/)
   |||,
   license: license.id,
   links: ee.standardLinks(subdir, id),
@@ -59,20 +57,15 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
     'water',
   ],
   providers: [
-    ee.producer_provider('OpenET, Inc.', 'https://openetdata.org/'),
+    ee.producer_provider('OpenET, Inc.', 'https://etdata.org/'),
     ee.host_provider(self_ee_catalog_url),
   ],
-  extent: ee.extent(-126, 25, -66, 50, '2015-10-01T00:00:00Z', null),
+  extent: ee.extent(-126, 25, -86, 50, '1999-10-01T00:00:00Z', '2025-01-01T00:00:00Z'),
   summaries: {
     'gee:schema': [
       {
         name: 'build_date',
         description: 'Date assets were built',
-        type: ee_const.var_type.string,
-      },
-      {
-        name: 'build_status',
-        description: 'Status can be "permanent" or "provisional".  Images flagged as "provisional" may be updated in the future.',
         type: ee_const.var_type.string,
       },
       {
@@ -109,11 +102,6 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
         name: 'et_reference_source',
         description: 'Collection ID for the daily reference ET data',
         type: ee_const.var_type.string,
-      },
-      {
-        name: 'image_source_count',
-        description: 'Number of scene images used in the interpolation',
-        type: ee_const.var_type.double,
       },
       {
         name: 'interp_days',
@@ -160,19 +148,15 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
         description: 'Start date of month',
         type: ee_const.var_type.string,
       },
-      {
-        name: 'units_et',
-        description: 'Units of the "et" band',
-        type: ee_const.var_type.string,
-      },
     ],
     gsd: [30],
     'eo:bands': [
       {
         name: 'et',
-        description: 'PT-JPL ET value',
+        description: 'SSEBop ET value',
         'gee:units': units.millimeter,
       },
+
       {
         name: 'count',
         description: 'Number of cloud free values',
@@ -181,7 +165,7 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
     ],
     'gee:visualizations': [
       {
-        display_name: 'OpenET PT-JPL Monthly ET',
+        display_name: 'OpenET SSEBop Monthly ET',
         lookat: {
           lat: 38,
           lon: -100,
@@ -203,29 +187,67 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
       },
     ],
   },
-  'sci:doi': '10.1016/j.rse.2007.06.025',
+  'sci:doi': '10.3390/rs15010260',
   'sci:citation': |||
-    Fisher, J.B., Tu, K.P. and Baldocchi, D.D., 2008. Global estimates of the
-    land–atmosphere water flux based on monthly AVHRR and ISLSCP-II data,
-    validated at 16 FLUXNET sites. Remote Sensing of Environment, 112(3),
-    pp.901-919.
-    [doi:10.1016/j.rse.2007.06.025](https://doi.org/10.1016/j.rse.2007.06.025)
+    Senay, G.B., Parrish, G.E., Schauer, M., Friedrichs, M., Khand, K., Boiko,
+    O., Kagone, S., Dittmeier, R., Arab, S. and Ji, L., 2023. Improving the
+    Operational Simplified Surface Energy Balance Evapotranspiration Model Using
+    the Forcing and Normalizing Operation. Remote Sensing, 15(1), p.260.
+    [doi:10.3390/rs15010260](https://doi.org/10.3390/rs15010260)
   |||,
   'sci:publications': [
     {
       citation: |||
-        Abdelrady, A., Timmermans, J., Vekerdy, Z. and Salama, M., 2016.
-        Surface energy balance of fresh and saline waters: AquaSEBS. Remote
-        sensing, 8(7), p.583.
-        [doi:10.3390/rs8070583](https://doi.org/10.3390/rs8070583)
+        Senay, G.B., Bohms, S., Singh, R.K., Gowda, P.H., Velpuri, N.M., Alemu,
+        H. and Verdin, J.P., 2013. Operational evapotranspiration mapping using
+        remote sensing and weather datasets: A new parameterization for the SSEB
+        approach. JAWRA Journal of the American Water Resources Association,
+        49(3), pp.577-591.
+        [doi:10.1111/jawr.12057](https://doi.org/10.1111/jawr.12057)
       |||,
     },
-  ],
+    {
+      citation: |||
+        Senay, G.B., Schauer, M., Friedrichs, M., Velpuri, N.M. and Singh, R.K.,
+        2017. Satellite-based water use dynamics using historical Landsat data
+        (1984–2014) in the southwestern United States. Remote Sensing of
+        Environment, 202, pp.98-112.
+        [doi:10.1016/j.rse.2017.05.005c](https://doi.org/10.1016/j.rse.2017.05.005)
+      |||,
+    },
+    {
+      citation: |||
+        Senay, G.B., 2018. Satellite psychrometric formulation of the
+        Operational Simplified Surface Energy Balance (SSEBop) model for
+        quantifying and mapping evapotranspiration. Applied Engineering in
+        Agriculture, 34(3), pp.555-566.
+        [doi:10.13031/aea.12614](https://doi.org/10.13031/aea.12614)
+      |||,
+    },
+    {
+      citation: |||
+        Senay, G.B., Friedrichs, M., Morton, C., Parrish, G.E., Schauer, M.,
+        Khand, K., Kagone, S., Boiko, O. and Huntington, J., 2022.  Mapping
+        actual evapotranspiration using Landsat for the conterminous United
+        States: Google Earth Engine implementation and assessment of the SSEBop
+        model. Remote Sensing of Environment, 275, p.113011.
+        [doi:10.1016/j.rse.2022.113011](https://doi.org/10.1016/j.rse.2022.113011)
+      |||,
+    },
+   ],
   'gee:interval': {
     type: 'cadence',
     unit: 'month',
     interval: 1,
   },
+  'gee:status': 'beta',
   'gee:terms_of_use': ee.gee_terms_of_use(license),
-  'gee:user_uploaded': true,
+  'gee:type': ee_const.gee_type.image_collection,
+  stac_version: ee_const.stac_version,
+  type: ee_const.stac_type.collection,
+  stac_extensions: [
+    ee_const.ext_eo,
+    ee_const.ext_sci,
+    ee_const.ext_ver,
+  ],
 }

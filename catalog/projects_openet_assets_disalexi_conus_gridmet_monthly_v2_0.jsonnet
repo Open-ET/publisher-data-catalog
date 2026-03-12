@@ -1,5 +1,5 @@
-local id = 'OpenET/PTJPL/CONUS/GRIDMET/MONTHLY/v2_0';
-local subdir = 'OpenET';
+local id = 'projects/openet/asset/DISALEXI/conus_gridmet_monthly_v2_0';
+local subdir = 'openet';
 local version = '2.0';
 
 local ee_const = import 'earthengine_const.libsonnet';
@@ -14,38 +14,22 @@ local base_filename = basename + '.json';
 local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
 
 {
-  stac_version: ee_const.stac_version,
-  type: ee_const.stac_type.collection,
-  stac_extensions: [
-    ee_const.ext_eo,
-    ee_const.ext_sci,
-    ee_const.ext_ver,
-  ],
   id: id,
-  title: 'OpenET PT-JPL Monthly Evapotranspiration v' + version,
+  title: 'OpenET DisALEXI Monthly Evapotranspiration v' + version,
   version: version,
-  'gee:type': ee_const.gee_type.image_collection,
   description: |||
-    Priestley-Taylor Jet Propulsion Laboratory (PT-JPL)
+    Atmosphere-Land Exchange Inverse / Disaggregation of the Atmosphere-Land
+    Exchange Inverse (ALEXI/DisALEXI)
 
-    The core formulation of the PT-JPL model within the OpenET framework has
-    not changed from the original formulation detailed in Fisher et al. (2008).
-    However, enhancements and updates to model inputs and time integration for
-    PT-JPL were made to take advantage of contemporary gridded weather datasets,
-    provide consistency with other models, improve open water evaporation
-    estimates, and account for advection over crop and wetland areas in
-    semiarid and arid environments. These changes include the use of
-    Landsat surface reflectance and thermal radiation for calculating net
-    radiation, photosynthetically active radiation, plant canopy and moisture
-    variables, and use of NLDAS, Spatial CIMIS, and gridMET weather data for
-    estimating insolation and ASCE reference ET. Similar to the implementation
-    of other OpenET models, estimation of daily and monthly time integrated
-    ET is based on the fraction of ASCE reference ET. Open water evaporation
-    is estimated following a surface energy balance approach of Abdelrady
-    et al. (2016) that is specific for water bodies by accounting for water
-    heat flux as opposed to soil heat flux.
-
-    [Additional information](https://openetdata.org/methodologies/)
+    DisALEXI was recently ported to Google Earth Engine as part of the OpenET
+    framework and the baseline ALEXI/DisALEXI model structure is described by
+    Anderson et al. (2012, 2018). The ALEXI evapotranspiration (ET) model
+    specifically uses time differential land surface temperature (LST)
+    measurements from geostationary or moderate resolution polar orbiting
+    platforms to generate regional ET maps. DisALEXI then disaggregates the
+    regional ALEXI ET to finer scales using Landsat data (30 m; biweekly) to
+    resolve individual farm fields and other landscape features.
+    [Additional information](https://etdata.org/methods/)
   |||,
   license: license.id,
   links: ee.standardLinks(subdir, id),
@@ -59,10 +43,10 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
     'water',
   ],
   providers: [
-    ee.producer_provider('OpenET, Inc.', 'https://openetdata.org/'),
+    ee.producer_provider('OpenET, Inc.', 'https://etdata.org/'),
     ee.host_provider(self_ee_catalog_url),
   ],
-  extent: ee.extent(-126, 25, -66, 50, '1999-10-01T00:00:00Z', null),
+  extent: ee.extent(-126, 25, -86, 50, '2001-01-01T00:00:00Z', '2025-01-01T00:00:00Z'),
   summaries: {
     'gee:schema': [
       {
@@ -155,7 +139,7 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
     'eo:bands': [
       {
         name: 'et',
-        description: 'PT-JPL ET value',
+        description: 'DisALEXI ET value',
         'gee:units': units.millimeter,
       },
       {
@@ -166,7 +150,7 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
     ],
     'gee:visualizations': [
       {
-        display_name: 'OpenET PT-JPL Monthly ET',
+        display_name: 'OpenET DisALEXI Monthly ET',
         lookat: {
           lat: 38,
           lon: -100,
@@ -188,21 +172,23 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
       },
     ],
   },
-  'sci:doi': '10.1016/j.rse.2007.06.025',
+  'sci:doi': '10.3390/rs10060889',
   'sci:citation': |||
-    Fisher, J.B., Tu, K.P. and Baldocchi, D.D., 2008. Global estimates of the
-    land–atmosphere water flux based on monthly AVHRR and ISLSCP-II data,
-    validated at 16 FLUXNET sites. Remote Sensing of Environment, 112(3),
-    pp.901-919.
-    [doi:10.1016/j.rse.2007.06.025](https://doi.org/10.1016/j.rse.2007.06.025)
+    Anderson, M., Gao, F., Knipper, K., Hain, C., Dulaney, W., Baldocchi, D .,
+    Eichelmann, E., Hemes, K., Yang, Y., Medellin-Azuara, J. and Kustas, W.,
+    2018. Field-scale assessment of land and water use change over the
+    California Delta using remote sensing. Remote Sensing, 10(6), p.889.
+    [doi:10.3390/rs10060889](https://doi.org/10.3390/rs10060889)
   |||,
   'sci:publications': [
     {
       citation: |||
-        Abdelrady, A., Timmermans, J., Vekerdy, Z. and Salama, M., 2016.
-        Surface energy balance of fresh and saline waters: AquaSEBS. Remote
-        sensing, 8(7), p.583.
-        [doi:10.3390/rs8070583](https://doi.org/10.3390/rs8070583)
+        Anderson, M.C., Norman, J.M., Mecikalski, J.R., Otkin, J.A. and Kustas,
+        W.P., 2007. A climatological study of evapotranspiration and moisture
+        stress across the continental United States based on thermal remote
+        sensing: 1. Model formulation. Journal of Geophysical Research:
+        Atmospheres, 112(D10).
+        [doi:10.1029/2006JD007506](https://doi.org/10.1029/2006JD007506)
       |||,
     },
   ],
@@ -211,6 +197,14 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
     unit: 'month',
     interval: 1,
   },
+  'gee:status': 'beta',
   'gee:terms_of_use': ee.gee_terms_of_use(license),
-  'gee:user_uploaded': true,
+  'gee:type': ee_const.gee_type.image_collection,
+  stac_version: ee_const.stac_version,
+  type: ee_const.stac_type.collection,
+  stac_extensions: [
+    ee_const.ext_eo,
+    ee_const.ext_sci,
+    ee_const.ext_ver,
+  ],
 }

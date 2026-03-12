@@ -1,5 +1,5 @@
-local id = 'OpenET/GEESEBAL/CONUS/GRIDMET/MONTHLY/v2_1';
-local subdir = 'OpenET';
+local id = 'projects/openet/asset/ssebop/conus/gridmet/monthly/v2_1';
+local subdir = 'openet';
 local version = '2.1';
 
 local ee_const = import 'earthengine_const.libsonnet';
@@ -14,59 +14,36 @@ local base_filename = basename + '.json';
 local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
 
 {
-  stac_version: ee_const.stac_version,
-  type: ee_const.stac_type.collection,
-  stac_extensions: [
-    ee_const.ext_eo,
-    ee_const.ext_sci,
-    ee_const.ext_ver,
-  ],
   id: id,
-  title: 'OpenET geeSEBAL Monthly Evapotranspiration v' + version,
+  title: 'OpenET SSEBop Monthly Evapotranspiration v' + version,
   version: version,
-  'gee:type': ee_const.gee_type.image_collection,
   description: |||
-    Implementation of geeSEBAL was recently completed within the OpenET
-    framework and an overview of the current geeSEBAL version can be found
-    in Laipelt et al. (2021), which is based on the original algorithms
-    developed by Bastiaanssen et al. (1998). The OpenET geeSEBAL implementation
-    uses land surface temperature (LST) data from Landsat Collection 2, in
-    addition to NLDAS and gridMET datasets as instantaneous and daily
-    meteorological inputs, respectively. The automated statistical algorithm
-    to select the hot and cold endmembers is based on a simplified version of
-    the Calibration using Inverse Modeling at Extreme Conditions (CIMEC)
-    algorithm proposed by Allen et al. (2013), where quantiles of LST and the
-    normalized difference vegetation index (NDVI) values are used to select
-    endmember candidates in the Landsat domain area. The cold and wet endmember
-    candidates are selected in well vegetated areas, while the hot and dry
-    endmember candidates are selected in the least vegetated cropland areas.
-    Based on the selected endmembers, geeSEBAL assumes that in the cold and
-    wet endmember all available energy is converted to latent heat (with high
-    rates of transpiration), while in the hot and dry endmember all available
-    energy is converted to sensible heat. Finally, estimates of daily
-    evapotranspiration are upscaled from instantaneous estimates based on the
-    evaporative fraction, assuming it is constant during the daytime without
-    significant changes in soil moisture and advection. Based on the results
-    from the OpenET Accuracy Assessment and Intercomparison study, the OpenET
-    geeSEBAL algorithm was modified as follows: (i) the simplified version of
-    CIMEC was improved by using additional filters to select the endmembers,
-    including the use of the USDA Cropland Data Layer (CDL) and filters for
-    NDVI, LST and albedo; (ii) corrections to LST for endmembers based on
-    antecedent precipitation; (iii) definition of NLDAS wind speed thresholds
-    to reduce model instability during the atmospheric correction; and, (iv)
-    improvements to estimate daily net radiation, using FAO-56 as reference
-    (Allen et al., 1998). Overall, geeSEBAL performance is dependent on
-    topographic, climate, and meteorological conditions, with higher
-    sensitivity and uncertainty related to hot and cold endmember selections
-    for the CIMEC automated calibration, and lower sensitivity and uncertainty
-    related to meteorological inputs (Laipelt et al., 2021 and Kayser
-    et al., 2022). To reduce uncertainties related to complex terrain,
-    improvements were added to correct LST and global (incident) radiation on
-    the surface (including the environmental lapse rate, elevation slope
-    and aspect) to represent the effects of topographic features on the
-    model’s endmember selection algorithm and ET estimates.
+    Operational Simplified Surface Energy Balance (SSEBop)
 
-    [Additional information](https://openetdata.org/methodologies/)
+    The Operational Simplified Surface Energy Balance (SSEBop) model by Senay
+    et al. (2013, 2017) is a thermal-based simplified surface energy model for
+    estimating actual ET based on the principles of satellite psychrometry
+    (Senay 2018). The OpenET SSEBop implementation uses land surface temperature
+    (Ts) from Landsat (Collection 2 Level-2 Science Products) with key model
+    parameters (cold/wet-bulb reference, Tc, and surface psychrometric
+    constant, 1/dT) derived from a combination of observed surface temperature,
+    normalized difference vegetation index (NDVI), climatological average
+    (1980-2017) daily maximum air temperature (Ta, 1-km) from Daymet, and
+    net radiation data from ERA-5. This model implementation uses the Google
+    Earth Engine processing framework for connecting key SSEBop ET functions
+    and algorithms together when generating both intermediate and aggregated ET
+    results. A detailed study and evaluation of the SSEBop model across CONUS
+    (Senay et al., 2022) informs both cloud implementation and assessment for
+    water balance applications at broad scales. Notable model (v0.2.6)
+    enhancements and performance against previous versions include additional
+    compatibility with Landsat 9 (launched Sep 2021), global model
+    extensibility, and improved parameterization of SSEBop using
+    FANO (Forcing and Normalizing Operation) to better estimate ET
+    in all landscapes and all seasons regardless of vegetation cover density,
+    thereby improving model accuracy by avoiding extrapolation of Tc to
+    non-calibration regions.
+
+    [Additional information](https://etdata.org/methods/)
   |||,
   license: license.id,
   links: ee.standardLinks(subdir, id),
@@ -80,7 +57,7 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
     'water',
   ],
   providers: [
-    ee.producer_provider('OpenET, Inc.', 'https://openetdata.org/'),
+    ee.producer_provider('OpenET, Inc.', 'https://etdata.org/'),
     ee.host_provider(self_ee_catalog_url),
   ],
   extent: ee.extent(-126, 25, -66, 50, '2015-10-01T00:00:00Z', null),
@@ -191,9 +168,10 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
     'eo:bands': [
       {
         name: 'et',
-        description: 'geeSEBAL ET value',
+        description: 'SSEBop ET value',
         'gee:units': units.millimeter,
       },
+
       {
         name: 'count',
         description: 'Number of cloud free values',
@@ -202,7 +180,7 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
     ],
     'gee:visualizations': [
       {
-        display_name: 'OpenET geeSEBAL Monthly ET',
+        display_name: 'OpenET SSEBop Monthly ET',
         lookat: {
           lat: 38,
           lon: -100,
@@ -224,42 +202,51 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
       },
     ],
   },
-  'sci:doi': '10.1016/j.isprsjprs.2021.05.018',
+  'sci:doi': '10.3390/rs15010260',
   'sci:citation': |||
-    Laipelt, L., Kayser, R.H.B., Fleischmann, A.S., Ruhoff, A., Bastiaanssen,
-    W., Erickson, T.A. and Melton, F., 2021. Long-term monitoring of
-    evapotranspiration using the SEBAL algorithm and Google Earth Engine cloud
-    computing. ISPRS Journal of Photogrammetry and Remote Sensing, 178,
-    pp.81-96.
-    [doi:10.1016/j.isprsjprs.2021.05.018](https://doi.org/10.1016/j.isprsjprs.2021.05.018)
+    Senay, G.B., Parrish, G.E., Schauer, M., Friedrichs, M., Khand, K., Boiko,
+    O., Kagone, S., Dittmeier, R., Arab, S. and Ji, L., 2023. Improving the
+    Operational Simplified Surface Energy Balance Evapotranspiration Model Using
+    the Forcing and Normalizing Operation. Remote Sensing, 15(1), p.260.
+    [doi:10.3390/rs15010260](https://doi.org/10.3390/rs15010260)
   |||,
   'sci:publications': [
     {
       citation: |||
-        Bastiaanssen, W.G., Menenti, M., Feddes, R.A. and Holtslag, A.A.M.,
-        1998. A remote sensing surface energy balance algorithm for land
-        (SEBAL). 1. Formulation. Journal of hydrology, 212, pp.198-212.
-        [doi:S0022-1694(98)00253-4](https://doi.org/10.1016/S0022-1694(98)00253-4)
+        Senay, G.B., Bohms, S., Singh, R.K., Gowda, P.H., Velpuri, N.M., Alemu,
+        H. and Verdin, J.P., 2013. Operational evapotranspiration mapping using
+        remote sensing and weather datasets: A new parameterization for the SSEB
+        approach. JAWRA Journal of the American Water Resources Association,
+        49(3), pp.577-591.
+        [doi:10.1111/jawr.12057](https://doi.org/10.1111/jawr.12057)
       |||,
     },
     {
       citation: |||
-        Kayser, R.H., Ruhoff, A., Laipelt, L., de Mello Kich, E., Roberti, D.
-        R., de Arruda Souza, V., Rubert, G.C.D., Collischonn, W. and Neale,
-        C.M.U., 2022. Assessing geeSEBAL automated calibration and
-        meteorological reanalysis uncertainties to estimate evapotranspiration
-        in subtropical humid climates. Agricultural and Forest Meteorology,
-        314, p.108775.
-        [doi:10.1016/j.agrformet.2021.108775](https://doi.org/10.1016/j.agrformet.2021.108775)
+        Senay, G.B., Schauer, M., Friedrichs, M., Velpuri, N.M. and Singh, R.K.,
+        2017. Satellite-based water use dynamics using historical Landsat data
+        (1984–2014) in the southwestern United States. Remote Sensing of
+        Environment, 202, pp.98-112.
+        [doi:10.1016/j.rse.2017.05.005c](https://doi.org/10.1016/j.rse.2017.05.005)
       |||,
     },
     {
       citation: |||
-        Allen, R.G., Burnett, B., Kramber, W., Huntington, J., Kjaersgaard, J.,
-        Kilic, A., Kelly, C. and Trezza, R., 2013. Automated calibration of the
-        metric-landsat evapotranspiration process. JAWRA Journal of the American
-        Water Resources Association, 49(3), pp.563-576.
-        [doi:10.1111/jawr.12056](https://doi.org/10.1111/jawr.12056)
+        Senay, G.B., 2018. Satellite psychrometric formulation of the
+        Operational Simplified Surface Energy Balance (SSEBop) model for
+        quantifying and mapping evapotranspiration. Applied Engineering in
+        Agriculture, 34(3), pp.555-566.
+        [doi:10.13031/aea.12614](https://doi.org/10.13031/aea.12614)
+      |||,
+    },
+    {
+      citation: |||
+        Senay, G.B., Friedrichs, M., Morton, C., Parrish, G.E., Schauer, M.,
+        Khand, K., Kagone, S., Boiko, O. and Huntington, J., 2022.  Mapping
+        actual evapotranspiration using Landsat for the conterminous United
+        States: Google Earth Engine implementation and assessment of the SSEBop
+        model. Remote Sensing of Environment, 275, p.113011.
+        [doi:10.1016/j.rse.2022.113011](https://doi.org/10.1016/j.rse.2022.113011)
       |||,
     },
    ],
@@ -269,5 +256,13 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
     interval: 1,
   },
   'gee:terms_of_use': ee.gee_terms_of_use(license),
-  'gee:user_uploaded': true,
+  'gee:type': ee_const.gee_type.image_collection,
+  'gee:status': 'beta',
+  type: ee_const.stac_type.collection,
+  stac_version: ee_const.stac_version,
+  stac_extensions: [
+    ee_const.ext_eo,
+    ee_const.ext_sci,
+    ee_const.ext_ver,
+  ],
 }

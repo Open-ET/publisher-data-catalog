@@ -1,5 +1,5 @@
-local id = 'OpenET/ENSEMBLE/CONUS/GRIDMET/MONTHLY/v2_0';
-local subdir = 'OpenET';
+local id = 'projects/openet/asset/ENSEMBLE/conus_gridmet_monthly_v2_0';
+local subdir = 'openet';
 local version = '2.0';
 
 local ee_const = import 'earthengine_const.libsonnet';
@@ -14,17 +14,9 @@ local base_filename = basename + '.json';
 local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
 
 {
-  stac_version: ee_const.stac_version,
-  type: ee_const.stac_type.collection,
-  stac_extensions: [
-    ee_const.ext_eo,
-    ee_const.ext_sci,
-    ee_const.ext_ver,
-  ],
   id: id,
   title: 'OpenET Ensemble Monthly Evapotranspiration v' + version,
   version: version,
-  'gee:type': ee_const.gee_type.image_collection,
   description: |||
     The OpenET dataset includes satellite-based data on the total amount of
     water that is transferred from the land surface to the atmosphere through
@@ -39,7 +31,7 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
     pixel). The monthly ET dataset provides data on total ET by month as an
     equivalent depth of water in millimeters.
 
-    [Additional information](https://openetdata.org/methodologies/)
+    [Additional information](https://etdata.org/methods/)
   |||,
   license: license.id,
   links: ee.standardLinks(subdir, id),
@@ -53,10 +45,10 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
     'water',
   ],
   providers: [
-    ee.producer_provider('OpenET, Inc.', 'https://openetdata.org/'),
+    ee.producer_provider('OpenET, Inc.', 'https://etdata.org/'),
     ee.host_provider(self_ee_catalog_url),
   ],
-  extent: ee.extent(-126.0, 25.0, -66.0, 50.0, '1999-10-01T00:00:00Z', null),
+  extent: ee.extent(-126, 25, -86, 50, '1999-10-01T00:00:00Z', '2025-01-01T00:00:00Z'),
   summaries: {
     'gee:schema': [
       {
@@ -271,6 +263,14 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
     unit: 'month',
     interval: 1,
   },
+  'gee:status': 'beta',
   'gee:terms_of_use': ee.gee_terms_of_use(license),
-  'gee:user_uploaded': true,
+  'gee:type': ee_const.gee_type.image_collection,
+  stac_version: ee_const.stac_version,
+  type: ee_const.stac_type.collection,
+  stac_extensions: [
+    ee_const.ext_eo,
+    ee_const.ext_sci,
+    ee_const.ext_ver,
+  ],
 }
