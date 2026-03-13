@@ -1,2 +1,3 @@
-# public-data-catalog
-Contains the Jsonnet configurations and supporting files for integrating OpenET datasets into the Google Cloud Public Data Catalog.
+# publisher-data-catalog
+
+Contains a copy of the jsonnet configurations and supporting files for hosting OpenET datasets into the OpenET  Publisher Data Catalog in Earth Engine.
