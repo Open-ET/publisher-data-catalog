@@ -1,4 +1,4 @@
-local id = 'projects/openet/asset/ssebop/conus/gridmet/monthly/v2_1';
+local id = 'projects/openet/assets/ssebop/conus/gridmet/monthly/v2_1';
 local subdir = 'openet';
 local version = '2.1';
 

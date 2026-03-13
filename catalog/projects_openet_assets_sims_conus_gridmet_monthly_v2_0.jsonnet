@@ -1,4 +1,4 @@
-local id = 'projects/openet/asset/sims/conus_gridmet_monthly_v2_0';
+local id = 'projects/openet/assets/sims/conus/gridmet/monthly/v2_0';
 local subdir = 'openet';
 local version = '2.0';
 
