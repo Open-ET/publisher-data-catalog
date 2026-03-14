@@ -1,4 +1,4 @@
-local id = 'projects/openet/asset/EEMETRIC/conus_gridmet_monthly_v2_0_pre2000';
+local id = 'projects/openet/assets/eemetric/conus/gridmet/monthly/v2_0_pre2000';
 local subdir = 'openet';
 local version = '2.0';
 
