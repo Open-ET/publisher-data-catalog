@@ -18,7 +18,7 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
   title: 'OpenET SIMS Monthly Evapotranspiration v' + version,
   version: version,
   description: |||
-    Satellite Irrigation Management Support
+    Satellite Irrigation Management Support (SIMS).
 
     The NASA Satellite Irrigation Management Support (SIMS) model was originally
     developed to support satellite mapping of crop coefficients and
@@ -58,6 +58,7 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
     are masked out in this data collection. Future research will extend the
     vegetation density-crop coefficient approach used within SIMS to other land
     cover types.
+
     [Additional information](https://etdata.org/methods/)
   |||,
   license: license.id,

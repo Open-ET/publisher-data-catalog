@@ -19,16 +19,17 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
   version: version,
   description: |||
     Atmosphere-Land Exchange Inverse / Disaggregation of the Atmosphere-Land
-    Exchange Inverse (ALEXI/DisALEXI)
+    Exchange Inverse (ALEXI/DisALEXI).
 
-    DisALEXI was recently ported to Google Earth Engine as part of the OpenET
-    framework and the baseline ALEXI/DisALEXI model structure is described by
+    DisALEXI was ported to Google Earth Engine as part of the OpenET
+    framework. The baseline ALEXI/DisALEXI model structure is described by
     Anderson et al. (2012, 2018). The ALEXI evapotranspiration (ET) model
     specifically uses time differential land surface temperature (LST)
     measurements from geostationary or moderate resolution polar orbiting
     platforms to generate regional ET maps. DisALEXI then disaggregates the
     regional ALEXI ET to finer scales using Landsat data (30 m; biweekly) to
     resolve individual farm fields and other landscape features.
+
     [Additional information](https://etdata.org/methods/)
   |||,
   license: license.id,
