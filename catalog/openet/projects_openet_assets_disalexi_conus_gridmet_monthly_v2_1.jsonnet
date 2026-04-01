@@ -37,7 +37,6 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
   'gee:categories': ['water-vapor'],
   keywords: [
     'evapotranspiration',
-    'gridmet_derived',
     'landsat_derived',
     'monthly',
     'openet',
