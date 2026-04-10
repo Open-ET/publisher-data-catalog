@@ -31,15 +31,16 @@ local catalog_base_url = ee_const.catalog_base;
     SSEBop relies on two primary inputs:
 
     1. Land surface temperature from Landsat Collection 2 Level 2 Science
-    Products.
-    2. Gridded reference ET from gridMET (Abotzoglou, 2013).
+    Products
+    2. Gridded reference ET from gridMET (Abotzoglou, 2013)
 
     Key model parameters, including the cold/wet bulb reference temperature
     (Tc) and the surface psychrometric constant (1/dT), are derived using a
-    combination of observed surface temperature, NDVI, and ERA5 net radiation
-    data (DOI: 10.5066/P9JBW6R9). These components are integrated within the
-    Google Earth Engine processing environment, which links the full suite of
-    SSEBop algorithms to generate both intermediate outputs and aggregated ET
+    combination of observed surface temperature, normalized difference
+    vegetation index (NDVI), and ERA5 net radiation data
+    (DOI: 10.5066/P9JBW6R9). These components are integrated within the Google
+    Earth Engine processing environment, which links the full suite of SSEBop
+    algorithms to generate both intermediate outputs and aggregated ET
     products. Extensive evaluation across the conterminous United States
     (Senay et al., 2022; Volk et al., 2024; Ji et al., 2025; Khand et al, 2025)
     has guided the cloud based implementation and demonstrated the model’s
@@ -47,12 +48,11 @@ local catalog_base_url = ee_const.catalog_base;
     water budget analysis.
 
     For OpenET Collection 2.1, SSEBop model v0.7.1 (Senay et al., 2026)
-    includes a notable enhancement: an improved implementation of the FANO
-    (Forcing and Normalizing Operation) Equation for determining Tc. This
-    update strengthens the model’s ability to represent wet surfaces with low
-    NDVI, improving performance in areas where vegetation signals are weak or
-    mixed, particularly over farmlands and grasslands during sparse canopy
-    over.
+    includes a notable enhancement: an improved implementation of the Forcing
+    and Normalizing Operation (FANO) equation for determining Tc. This update
+    strengthens the model’s ability to represent wet surfaces with low NDVI,
+    improving performance in areas where vegetation signals are weak or mixed,
+    particularly over farmlands and grasslands during sparse canopy over.
 
     [Additional information](https://etdata.org/methods/)
   |||,
