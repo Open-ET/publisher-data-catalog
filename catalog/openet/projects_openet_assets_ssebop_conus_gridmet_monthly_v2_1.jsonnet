@@ -26,13 +26,15 @@ local catalog_base_url = ee_const.catalog_base;
     (Senay et al., 2013; 2023) is a thermal based approach for estimating
     actual evapotranspiration (ET) using the principles of satellite
     psychrometry (Senay, 2018). As one of the core models in the OpenET
-    ensemble, SSEBop provides a computationally efficient framework for large
-    area, operational ET mapping. The OpenET Collection 2.1 implementation of
-    SSEBop relies on two primary inputs:
+    ensemble, SSEBop provides a computationally efficient framework for large-
+    area, operational ET mapping.
+
+    The OpenET Collection 2.1 implementation of SSEBop relies on two primary
+    inputs:
 
     1. Land surface temperature from Landsat Collection 2 Level 2 Science
-    Products
-    2. Gridded reference ET from gridMET (Abotzoglou, 2013)
+    Products.
+    2. Gridded reference ET from gridMET (Abotzoglou, 2013).
 
     Key model parameters, including the cold/wet bulb reference temperature
     (Tc) and the surface psychrometric constant (1/dT), are derived using a
@@ -43,7 +45,7 @@ local catalog_base_url = ee_const.catalog_base;
     algorithms to generate both intermediate outputs and aggregated ET
     products. Extensive evaluation across the conterminous United States
     (Senay et al., 2022; Volk et al., 2024; Ji et al., 2025; Khand et al, 2025)
-    has guided the cloud based implementation and demonstrated the model’s
+    has guided the cloud-based implementation and demonstrated the model’s
     utility for applications such as crop water use assessment and regional
     water budget analysis.
 
@@ -52,7 +54,7 @@ local catalog_base_url = ee_const.catalog_base;
     and Normalizing Operation (FANO) equation for determining Tc. This update
     strengthens the model’s ability to represent wet surfaces with low NDVI,
     improving performance in areas where vegetation signals are weak or mixed,
-    particularly over farmlands and grasslands during sparse canopy over.
+    particularly over farmlands and grasslands during sparse canopy cover.
 
     [Additional information](https://etdata.org/methods/)
   |||,
