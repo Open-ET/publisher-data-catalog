@@ -18,6 +18,9 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
   title: 'OpenET geeSEBAL Monthly Evapotranspiration v' + version,
   version: version,
   description: |||
+    Google Earth Engine implementation of Surface Energy Balance Algorithm for
+    Land (SEBAL).
+
     Implementation of geeSEBAL was completed within the OpenET framework.
     An overview of the current geeSEBAL version can be found in Laipelt et al.
     (2021), which is based on the original algorithms developed by
