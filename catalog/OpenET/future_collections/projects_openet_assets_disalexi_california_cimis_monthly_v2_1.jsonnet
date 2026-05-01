@@ -1,5 +1,5 @@
-local id = 'projects/openet/assets/ptjpl/california/cimis/monthly/v2_1';
-local subdir = 'openet';
+local id = 'projects/openet/assets/disalexi/california/cimis/monthly/v2_1';
+local subdir = 'OpenET';
 local version = '2.1';
 
 local ee_const = import 'earthengine_const.libsonnet';
@@ -15,27 +15,20 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
 
 {
   id: id,
-  title: 'OpenET PT-JPL Monthly Evapotranspiration v' + version,
+  title: 'OpenET DisALEXI Monthly Evapotranspiration v' + version,
   version: version,
   description: |||
-    Priestley-Taylor Jet Propulsion Laboratory (PT-JPL).
+    Atmosphere-Land Exchange Inverse / Disaggregation of the Atmosphere-Land
+    Exchange Inverse (ALEXI/DisALEXI).
 
-    The core formulation of the PT-JPL model within the OpenET framework has
-    not changed from the original formulation detailed in Fisher et al. (2008).
-    However, enhancements and updates to model inputs and time integration for
-    PT-JPL were made to take advantage of contemporary gridded weather datasets,
-    provide consistency with other models, improve open water evaporation
-    estimates, and account for advection over crop and wetland areas in
-    semiarid and arid environments. These changes include the use of
-    Landsat surface reflectance and thermal radiation for calculating net
-    radiation, photosynthetically active radiation, plant canopy and moisture
-    variables, and use of NLDAS, Spatial CIMIS, and gridMET weather data for
-    estimating insolation and ASCE reference ET. Similar to the implementation
-    of other OpenET models, estimation of daily and monthly time integrated
-    ET is based on the fraction of ASCE reference ET. Open water evaporation
-    is estimated following a surface energy balance approach of Abdelrady
-    et al. (2016) that is specific for water bodies by accounting for water
-    heat flux as opposed to soil heat flux.
+    DisALEXI was ported to Google Earth Engine as part of the OpenET
+    framework. The baseline ALEXI/DisALEXI model structure is described by
+    Anderson et al. (2012, 2018). The ALEXI evapotranspiration (ET) model
+    specifically uses time differential land surface temperature (LST)
+    measurements from geostationary or moderate resolution polar orbiting
+    platforms to generate regional ET maps. DisALEXI then disaggregates the
+    regional ALEXI ET to finer scales using Landsat data (30 m; biweekly) to
+    resolve individual farm fields and other landscape features.
 
     [Additional information](https://etdata.org/methods/)
   |||,
@@ -44,7 +37,6 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
   'gee:categories': ['water-vapor'],
   keywords: [
     'evapotranspiration',
-    'gridmet_derived',
     'landsat_derived',
     'monthly',
     'openet',
@@ -173,10 +165,10 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
     ],
     'gee:visualizations': [
       {
-        display_name: 'OpenET PT-JPL Monthly ET',
+        display_name: 'OpenET DisALEXI Monthly ET',
         lookat: {
-          lat: 37.0,
-          lon: -119.0,
+          lat: 37,
+          lon: -119,
           zoom: 7,
         },
         image_visualization: {
@@ -195,21 +187,23 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
       },
     ],
   },
-  'sci:doi': '10.1016/j.rse.2007.06.025',
+  'sci:doi': '10.3390/rs10060889',
   'sci:citation': |||
-    Fisher, J.B., Tu, K.P. and Baldocchi, D.D., 2008. Global estimates of the
-    land–atmosphere water flux based on monthly AVHRR and ISLSCP-II data,
-    validated at 16 FLUXNET sites. Remote Sensing of Environment, 112(3),
-    pp.901-919.
-    [doi:10.1016/j.rse.2007.06.025](https://doi.org/10.1016/j.rse.2007.06.025)
+    Anderson, M., Gao, F., Knipper, K., Hain, C., Dulaney, W., Baldocchi, D .,
+    Eichelmann, E., Hemes, K., Yang, Y., Medellin-Azuara, J. and Kustas, W.,
+    2018. Field-scale assessment of land and water use change over the
+    California Delta using remote sensing. Remote Sensing, 10(6), p.889.
+    [doi:10.3390/rs10060889](https://doi.org/10.3390/rs10060889)
   |||,
   'sci:publications': [
     {
       citation: |||
-        Abdelrady, A., Timmermans, J., Vekerdy, Z. and Salama, M., 2016.
-        Surface energy balance of fresh and saline waters: AquaSEBS. Remote
-        sensing, 8(7), p.583.
-        [doi:10.3390/rs8070583](https://doi.org/10.3390/rs8070583)
+        Anderson, M.C., Norman, J.M., Mecikalski, J.R., Otkin, J.A. and Kustas,
+        W.P., 2007. A climatological study of evapotranspiration and moisture
+        stress across the continental United States based on thermal remote
+        sensing: 1. Model formulation. Journal of Geophysical Research:
+        Atmospheres, 112(D10).
+        [doi:10.1029/2006JD007506](https://doi.org/10.1029/2006JD007506)
       |||,
     },
   ],

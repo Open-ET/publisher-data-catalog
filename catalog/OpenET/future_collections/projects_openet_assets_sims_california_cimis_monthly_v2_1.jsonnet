@@ -1,6 +1,6 @@
-local id = 'projects/openet/assets/sims/conus/gridmet/monthly/v2_0_pre2000';
-local subdir = 'openet';
-local version = '2.0';
+local id = 'projects/openet/assets/sims/california/cimis/monthly/v2_1';
+local subdir = 'OpenET';
+local version = '2.1';
 
 local ee_const = import 'earthengine_const.libsonnet';
 local ee = import 'earthengine.libsonnet';
@@ -77,12 +77,17 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
     ee.producer_provider('OpenET, Inc.', 'https://etdata.org/'),
     ee.host_provider(self_ee_catalog_url),
   ],
-  extent: ee.extent(-126, 25, -86, 50, '1984-10-01T00:00:00Z', '1999-10-01T00:00:00Z'),
+  extent: ee.extent(-124.5, 32.0, -114.0, 42.0, '2003-10-01T00:00:00Z', null),
   summaries: {
     'gee:schema': [
       {
         name: 'build_date',
         description: 'Date assets were built',
+        type: ee_const.var_type.string,
+      },
+      {
+        name: 'build_status',
+        description: 'Status can be "permanent" or "provisional".  Images flagged as "provisional" may be updated in the future.',
         type: ee_const.var_type.string,
       },
       {
@@ -119,6 +124,11 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
         name: 'et_reference_source',
         description: 'Collection ID for the daily reference ET data',
         type: ee_const.var_type.string,
+      },
+      {
+        name: 'image_source_count',
+        description: 'Number of scene images used in the interpolation',
+        type: ee_const.var_type.double,
       },
       {
         name: 'interp_days',
@@ -165,6 +175,11 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
         description: 'Start date of month',
         type: ee_const.var_type.string,
       },
+      {
+        name: 'units_et',
+        description: 'Units of the "et" band',
+        type: ee_const.var_type.string,
+      },
     ],
     gsd: [30],
     'eo:bands': [
@@ -184,9 +199,9 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
       {
         display_name: 'OpenET SIMS Monthly ET',
         lookat: {
-          lat: 38,
-          lon: -100,
-          zoom: 5,
+          lat: 37.0,
+          lon: -119.0,
+          zoom: 7,
         },
         image_visualization: {
           band_vis: {

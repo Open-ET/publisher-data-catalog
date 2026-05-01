@@ -1,5 +1,5 @@
 local id = 'projects/openet/assets/ensemble/california/cimis/monthly/v2_1';
-local subdir = 'openet';
+local subdir = 'OpenET';
 local version = '2.1';
 
 local ee_const = import 'earthengine_const.libsonnet';

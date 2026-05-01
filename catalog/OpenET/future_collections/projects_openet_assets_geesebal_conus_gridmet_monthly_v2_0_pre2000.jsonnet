@@ -1,5 +1,5 @@
-local id = 'projects/openet/assets/PTJPL/conus/gridmet/monthly/v2_0_pre2000';
-local subdir = 'openet';
+local id = 'projects/openet/assets/GEESEBAL/conus/gridmet/monthly/v2_0_pre2000';
+local subdir = 'OpenET';
 local version = '2.0';
 
 local ee_const = import 'earthengine_const.libsonnet';
@@ -15,27 +15,56 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
 
 {
   id: id,
-  title: 'OpenET PT-JPL Monthly Evapotranspiration v' + version,
+  title: 'OpenET geeSEBAL Monthly Evapotranspiration v' + version,
   version: version,
   description: |||
-    Priestley-Taylor Jet Propulsion Laboratory (PT-JPL).
+    Implementation of geeSEBAL was completed within the OpenET framework.
+    An overview of the current geeSEBAL version can be found in Laipelt et al.
+    (2021), which is based on the original algorithms developed by
+    Bastiaanssen et al. (1998). The OpenET geeSEBAL implementation uses land
+    surface temperature (LST) data from Landsat Collection 2, in addition to
+    NLDAS and gridMET datasets as instantaneous and daily meteorological
+    inputs, respectively.
 
-    The core formulation of the PT-JPL model within the OpenET framework has
-    not changed from the original formulation detailed in Fisher et al. (2008).
-    However, enhancements and updates to model inputs and time integration for
-    PT-JPL were made to take advantage of contemporary gridded weather datasets,
-    provide consistency with other models, improve open water evaporation
-    estimates, and account for advection over crop and wetland areas in
-    semiarid and arid environments. These changes include the use of
-    Landsat surface reflectance and thermal radiation for calculating net
-    radiation, photosynthetically active radiation, plant canopy and moisture
-    variables, and use of NLDAS, Spatial CIMIS, and gridMET weather data for
-    estimating insolation and ASCE reference ET. Similar to the implementation
-    of other OpenET models, estimation of daily and monthly time integrated
-    ET is based on the fraction of ASCE reference ET. Open water evaporation
-    is estimated following a surface energy balance approach of Abdelrady
-    et al. (2016) that is specific for water bodies by accounting for water
-    heat flux as opposed to soil heat flux.
+    The automated statistical algorithm to select the hot and cold endmembers
+    is based on a simplified version of the Calibration using Inverse Modeling
+    at Extreme Conditions (CIMEC) algorithm proposed by Allen et al. (2013),
+    where quantiles of LST and the normalized difference vegetation index
+    (NDVI) values are used to select endmember candidates in the Landsat
+    domain area. The cold and wet endmember candidates are selected in well
+    vegetated areas, while the hot and dry endmember candidates are selected
+    in the least vegetated cropland areas.Based on the selected endmembers,
+    geeSEBAL assumes that in the cold and wet endmember all available energy
+    is converted to latent heat (with high rates of transpiration), while in
+    the hot and dry endmember all available energy is converted to sensible
+    heat. Finally, estimates of daily evapotranspiration are upscaled from
+    instantaneous estimates based on the evaporative fraction, assuming it is
+    constant during the daytime without significant changes in soil moisture
+    and advection.
+
+    Based on the results from the OpenET Accuracy Assessment and
+    Intercomparison study, the OpenET geeSEBAL algorithm was modified as
+    follows:
+
+    1. The simplified version of CIMEC was improved by using additional
+    filters to select the endmembers, including the use of the USDA Cropland
+    Data Layer (CDL) and filters for NDVI, LST and albedo.
+    2. Corrections to LST for endmembers based on antecedent precipitation.
+    3. Definition of NLDAS wind speed thresholds to reduce model instability
+    during the atmospheric correction.
+    4. Improvements to estimate daily net radiation, using FAO-56 as reference
+    (Allen et al., 1998).
+
+    Overall, geeSEBAL performance is dependent on topographic, climate, and
+    meteorological conditions, with higher sensitivity and uncertainty related
+    to hot and cold endmember selections for the CIMEC automated calibration,
+    and lower sensitivity and uncertainty related to meteorological inputs
+    (Laipelt et al., 2021 and Kayser et al., 2022). To reduce uncertainties
+    related to complex terrain, improvements were added to correct LST and
+    global (incident) radiation on the surface (including the environmental
+    lapse rate, elevation slope and aspect) to represent the effects of
+    topographic features on the model’s endmember selection algorithm and ET
+    estimates.
 
     [Additional information](https://etdata.org/methods/)
   |||,
@@ -54,7 +83,7 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
     ee.producer_provider('OpenET, Inc.', 'https://etdata.org/'),
     ee.host_provider(self_ee_catalog_url),
   ],
-  extent: ee.extent(-126, 25, -86, 50, '1984-10-01T00:00:00Z', '1999-10-01T00:00:00Z'),
+  extent: ee.extent(-126, 25, -66, 50, '1984-10-01T00:00:00Z', '1999-10-01T00:00:00Z'),
   summaries: {
     'gee:schema': [
       {
@@ -158,7 +187,7 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
     ],
     'gee:visualizations': [
       {
-        display_name: 'OpenET PT-JPL Monthly ET',
+        display_name: 'OpenET geeSEBAL Monthly ET',
         lookat: {
           lat: 38,
           lon: -100,
@@ -180,24 +209,45 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
       },
     ],
   },
-  'sci:doi': '10.1016/j.rse.2007.06.025',
+  'sci:doi': '10.1016/j.isprsjprs.2021.05.018',
   'sci:citation': |||
-    Fisher, J.B., Tu, K.P. and Baldocchi, D.D., 2008. Global estimates of the
-    land–atmosphere water flux based on monthly AVHRR and ISLSCP-II data,
-    validated at 16 FLUXNET sites. Remote Sensing of Environment, 112(3),
-    pp.901-919.
-    [doi:10.1016/j.rse.2007.06.025](https://doi.org/10.1016/j.rse.2007.06.025)
+    Laipelt, L., Kayser, R.H.B., Fleischmann, A.S., Ruhoff, A., Bastiaanssen,
+    W., Erickson, T.A. and Melton, F., 2021. Long-term monitoring of
+    evapotranspiration using the SEBAL algorithm and Google Earth Engine cloud
+    computing. ISPRS Journal of Photogrammetry and Remote Sensing, 178,
+    pp.81-96.
+    [doi:10.1016/j.isprsjprs.2021.05.018](https://doi.org/10.1016/j.isprsjprs.2021.05.018)
   |||,
   'sci:publications': [
     {
       citation: |||
-        Abdelrady, A., Timmermans, J., Vekerdy, Z. and Salama, M., 2016.
-        Surface energy balance of fresh and saline waters: AquaSEBS. Remote
-        sensing, 8(7), p.583.
-        [doi:10.3390/rs8070583](https://doi.org/10.3390/rs8070583)
+        Bastiaanssen, W.G., Menenti, M., Feddes, R.A. and Holtslag, A.A.M.,
+        1998. A remote sensing surface energy balance algorithm for land
+        (SEBAL). 1. Formulation. Journal of hydrology, 212, pp.198-212.
+        [doi:S0022-1694(98)00253-4](https://doi.org/10.1016/S0022-1694(98)00253-4)
       |||,
     },
-  ],
+    {
+      citation: |||
+        Kayser, R.H., Ruhoff, A., Laipelt, L., de Mello Kich, E., Roberti, D.
+        R., de Arruda Souza, V., Rubert, G.C.D., Collischonn, W. and Neale,
+        C.M.U., 2022. Assessing geeSEBAL automated calibration and
+        meteorological reanalysis uncertainties to estimate evapotranspiration
+        in subtropical humid climates. Agricultural and Forest Meteorology,
+        314, p.108775.
+        [doi:10.1016/j.agrformet.2021.108775](https://doi.org/10.1016/j.agrformet.2021.108775)
+      |||,
+    },
+    {
+      citation: |||
+        Allen, R.G., Burnett, B., Kramber, W., Huntington, J., Kjaersgaard, J.,
+        Kilic, A., Kelly, C. and Trezza, R., 2013. Automated calibration of the
+        metric-landsat evapotranspiration process. JAWRA Journal of the American
+        Water Resources Association, 49(3), pp.563-576.
+        [doi:10.1111/jawr.12056](https://doi.org/10.1111/jawr.12056)
+      |||,
+    },
+   ],
   'gee:interval': {
     type: 'cadence',
     unit: 'month',

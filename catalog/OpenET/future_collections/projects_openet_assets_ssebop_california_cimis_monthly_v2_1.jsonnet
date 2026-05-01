@@ -1,5 +1,5 @@
-local id = 'projects/openet/assets/disalexi/california/cimis/monthly/v2_1';
-local subdir = 'openet';
+local id = 'projects/openet/assets/ssebop/california/cimis/monthly/v2_1';
+local subdir = 'OpenET';
 local version = '2.1';
 
 local ee_const = import 'earthengine_const.libsonnet';
@@ -15,20 +15,33 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
 
 {
   id: id,
-  title: 'OpenET DisALEXI Monthly Evapotranspiration v' + version,
+  title: 'OpenET SSEBop Monthly Evapotranspiration v' + version,
   version: version,
   description: |||
-    Atmosphere-Land Exchange Inverse / Disaggregation of the Atmosphere-Land
-    Exchange Inverse (ALEXI/DisALEXI).
+    Operational Simplified Surface Energy Balance (SSEBop).
 
-    DisALEXI was ported to Google Earth Engine as part of the OpenET
-    framework. The baseline ALEXI/DisALEXI model structure is described by
-    Anderson et al. (2012, 2018). The ALEXI evapotranspiration (ET) model
-    specifically uses time differential land surface temperature (LST)
-    measurements from geostationary or moderate resolution polar orbiting
-    platforms to generate regional ET maps. DisALEXI then disaggregates the
-    regional ALEXI ET to finer scales using Landsat data (30 m; biweekly) to
-    resolve individual farm fields and other landscape features.
+    The Operational Simplified Surface Energy Balance (SSEBop) model by Senay
+    et al. (2013, 2017) is a thermal-based simplified surface energy model for
+    estimating actual ET based on the principles of satellite psychrometry
+    (Senay 2018). The OpenET SSEBop implementation uses land surface temperature
+    (Ts) from Landsat (Collection 2 Level-2 Science Products) with key model
+    parameters (cold/wet-bulb reference, Tc, and surface psychrometric
+    constant, 1/dT) derived from a combination of observed surface temperature,
+    normalized difference vegetation index (NDVI), climatological average
+    (1980-2017) daily maximum air temperature (Ta, 1-km) from Daymet, and
+    net radiation data from ERA-5. This model implementation uses the Google
+    Earth Engine processing framework for connecting key SSEBop ET functions
+    and algorithms together when generating both intermediate and aggregated ET
+    results. A detailed study and evaluation of the SSEBop model across CONUS
+    (Senay et al., 2022) informs both cloud implementation and assessment for
+    water balance applications at broad scales. Notable model (v0.2.6)
+    enhancements and performance against previous versions include additional
+    compatibility with Landsat 9 (launched Sep 2021), global model
+    extensibility, and improved parameterization of SSEBop using
+    FANO (Forcing and Normalizing Operation) to better estimate ET
+    in all landscapes and all seasons regardless of vegetation cover density,
+    thereby improving model accuracy by avoiding extrapolation of Tc to
+    non-calibration regions.
 
     [Additional information](https://etdata.org/methods/)
   |||,
@@ -37,6 +50,7 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
   'gee:categories': ['water-vapor'],
   keywords: [
     'evapotranspiration',
+    'gridmet_derived',
     'landsat_derived',
     'monthly',
     'openet',
@@ -157,6 +171,7 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
         description: 'Total actual evapotranspiration (ET)',
         'gee:units': units.millimeter,
       },
+
       {
         name: 'count',
         description: 'Number of cloud free observations in the month included in the interpolation',
@@ -165,10 +180,10 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
     ],
     'gee:visualizations': [
       {
-        display_name: 'OpenET DisALEXI Monthly ET',
+        display_name: 'OpenET SSEBop Monthly ET',
         lookat: {
-          lat: 37,
-          lon: -119,
+          lat: 37.0,
+          lon: -119.0,
           zoom: 7,
         },
         image_visualization: {
@@ -187,36 +202,64 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
       },
     ],
   },
-  'sci:doi': '10.3390/rs10060889',
+  'sci:doi': '10.3390/rs15010260',
   'sci:citation': |||
-    Anderson, M., Gao, F., Knipper, K., Hain, C., Dulaney, W., Baldocchi, D .,
-    Eichelmann, E., Hemes, K., Yang, Y., Medellin-Azuara, J. and Kustas, W.,
-    2018. Field-scale assessment of land and water use change over the
-    California Delta using remote sensing. Remote Sensing, 10(6), p.889.
-    [doi:10.3390/rs10060889](https://doi.org/10.3390/rs10060889)
+    Senay, G.B., Parrish, G.E., Schauer, M., Friedrichs, M., Khand, K., Boiko,
+    O., Kagone, S., Dittmeier, R., Arab, S. and Ji, L., 2023. Improving the
+    Operational Simplified Surface Energy Balance Evapotranspiration Model Using
+    the Forcing and Normalizing Operation. Remote Sensing, 15(1), p.260.
+    [doi:10.3390/rs15010260](https://doi.org/10.3390/rs15010260)
   |||,
   'sci:publications': [
     {
       citation: |||
-        Anderson, M.C., Norman, J.M., Mecikalski, J.R., Otkin, J.A. and Kustas,
-        W.P., 2007. A climatological study of evapotranspiration and moisture
-        stress across the continental United States based on thermal remote
-        sensing: 1. Model formulation. Journal of Geophysical Research:
-        Atmospheres, 112(D10).
-        [doi:10.1029/2006JD007506](https://doi.org/10.1029/2006JD007506)
+        Senay, G.B., Bohms, S., Singh, R.K., Gowda, P.H., Velpuri, N.M., Alemu,
+        H. and Verdin, J.P., 2013. Operational evapotranspiration mapping using
+        remote sensing and weather datasets: A new parameterization for the SSEB
+        approach. JAWRA Journal of the American Water Resources Association,
+        49(3), pp.577-591.
+        [doi:10.1111/jawr.12057](https://doi.org/10.1111/jawr.12057)
       |||,
     },
-  ],
+    {
+      citation: |||
+        Senay, G.B., Schauer, M., Friedrichs, M., Velpuri, N.M. and Singh, R.K.,
+        2017. Satellite-based water use dynamics using historical Landsat data
+        (1984–2014) in the southwestern United States. Remote Sensing of
+        Environment, 202, pp.98-112.
+        [doi:10.1016/j.rse.2017.05.005c](https://doi.org/10.1016/j.rse.2017.05.005)
+      |||,
+    },
+    {
+      citation: |||
+        Senay, G.B., 2018. Satellite psychrometric formulation of the
+        Operational Simplified Surface Energy Balance (SSEBop) model for
+        quantifying and mapping evapotranspiration. Applied Engineering in
+        Agriculture, 34(3), pp.555-566.
+        [doi:10.13031/aea.12614](https://doi.org/10.13031/aea.12614)
+      |||,
+    },
+    {
+      citation: |||
+        Senay, G.B., Friedrichs, M., Morton, C., Parrish, G.E., Schauer, M.,
+        Khand, K., Kagone, S., Boiko, O. and Huntington, J., 2022.  Mapping
+        actual evapotranspiration using Landsat for the conterminous United
+        States: Google Earth Engine implementation and assessment of the SSEBop
+        model. Remote Sensing of Environment, 275, p.113011.
+        [doi:10.1016/j.rse.2022.113011](https://doi.org/10.1016/j.rse.2022.113011)
+      |||,
+    },
+   ],
   'gee:interval': {
     type: 'cadence',
     unit: 'month',
     interval: 1,
   },
-  'gee:status': 'beta',
   'gee:terms_of_use': ee.gee_terms_of_use(license),
   'gee:type': ee_const.gee_type.image_collection,
-  stac_version: ee_const.stac_version,
+  'gee:status': 'beta',
   type: ee_const.stac_type.collection,
+  stac_version: ee_const.stac_version,
   stac_extensions: [
     ee_const.ext_eo,
     ee_const.ext_sci,

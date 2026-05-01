@@ -1,6 +1,6 @@
 TODO: Decide if version in ID should be "v1_0" or "v1" (the current collection ID is just "v1")
 local id = 'projects/openet/assets/reference_et/conus/gridmet/daily/v1_0';
-local subdir = 'openet';
+local subdir = 'OpenET';
 local version = '1.0';
 
 local ee_const = import 'earthengine_const.libsonnet';

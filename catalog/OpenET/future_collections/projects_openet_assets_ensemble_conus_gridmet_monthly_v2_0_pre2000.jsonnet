@@ -1,5 +1,5 @@
 assetslocal id = 'projects/openet/assets/ensemble/conus/gridmet/monthly/v2_0_pre2000';
-local subdir = 'openet';
+local subdir = 'OpenET';
 local version = '2.0';
 
 local ee_const = import 'earthengine_const.libsonnet';

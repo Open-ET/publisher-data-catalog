@@ -1,6 +1,6 @@
-local id = 'projects/openet/assets/ssebop/california/cimis/monthly/v2_1';
-local subdir = 'openet';
-local version = '2.1';
+local id = 'projects/openet/assets/ssebop/conus/gridmet/monthly/v2_0_pre2000';
+local subdir = 'OpenET';
+local version = '2.0';
 
 local ee_const = import 'earthengine_const.libsonnet';
 local ee = import 'earthengine.libsonnet';
@@ -60,17 +60,12 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
     ee.producer_provider('OpenET, Inc.', 'https://etdata.org/'),
     ee.host_provider(self_ee_catalog_url),
   ],
-  extent: ee.extent(-124.5, 32.0, -114.0, 42.0, '2003-10-01T00:00:00Z', null),
+  extent: ee.extent(-126, 25, -86, 50, '1984-10-01T00:00:00Z', '1999-10-01T00:00:00Z'),
   summaries: {
     'gee:schema': [
       {
         name: 'build_date',
         description: 'Date assets were built',
-        type: ee_const.var_type.string,
-      },
-      {
-        name: 'build_status',
-        description: 'Status can be "permanent" or "provisional".  Images flagged as "provisional" may be updated in the future.',
         type: ee_const.var_type.string,
       },
       {
@@ -107,11 +102,6 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
         name: 'et_reference_source',
         description: 'Collection ID for the daily reference ET data',
         type: ee_const.var_type.string,
-      },
-      {
-        name: 'image_source_count',
-        description: 'Number of scene images used in the interpolation',
-        type: ee_const.var_type.double,
       },
       {
         name: 'interp_days',
@@ -158,11 +148,6 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
         description: 'Start date of month',
         type: ee_const.var_type.string,
       },
-      {
-        name: 'units_et',
-        description: 'Units of the "et" band',
-        type: ee_const.var_type.string,
-      },
     ],
     gsd: [30],
     'eo:bands': [
@@ -182,9 +167,9 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
       {
         display_name: 'OpenET SSEBop Monthly ET',
         lookat: {
-          lat: 37.0,
-          lon: -119.0,
-          zoom: 7,
+          lat: 38,
+          lon: -100,
+          zoom: 5,
         },
         image_visualization: {
           band_vis: {
@@ -255,11 +240,11 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
     unit: 'month',
     interval: 1,
   },
+  'gee:status': 'beta',
   'gee:terms_of_use': ee.gee_terms_of_use(license),
   'gee:type': ee_const.gee_type.image_collection,
-  'gee:status': 'beta',
-  type: ee_const.stac_type.collection,
   stac_version: ee_const.stac_version,
+  type: ee_const.stac_type.collection,
   stac_extensions: [
     ee_const.ext_eo,
     ee_const.ext_sci,
