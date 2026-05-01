@@ -22,15 +22,14 @@ local catalog_base_url = ee_const.catalog_base;
   title: 'OpenET geeSEBAL Monthly Evapotranspiration v' + version,
   version: version,
   description: |||
-    Google Earth Engine implementation of Surface Energy Balance Algorithm for
-    Land (SEBAL).
+    Google Earth Engine implementation of the Surface Energy Balance Algorithm
+    for Land (SEBAL) model.
 
-    Implementation of geeSEBAL was completed within the OpenET framework.
     An overview of the current geeSEBAL version can be found in Laipelt et al.
     (2021), which is based on the original algorithms developed by
     Bastiaanssen et al. (1998). The OpenET geeSEBAL implementation uses land
     surface temperature (LST) data from Landsat Collection 2, in addition to
-    NLDAS and gridMET datasets as instantaneous and daily meteorological
+    NLDAS-2 and gridMET datasets as instantaneous and daily meteorological
     inputs, respectively.
 
     The automated statistical algorithm to select the hot and cold endmembers
@@ -57,7 +56,7 @@ local catalog_base_url = ee_const.catalog_base;
     filters to select the endmembers, including the use of the USDA Cropland
     Data Layer (CDL) and filters for NDVI, LST and albedo.
     2. Corrections to LST for endmembers based on antecedent precipitation.
-    3. Definition of NLDAS wind speed thresholds to reduce model instability
+    3. Definition of NLDAS-2 wind speed thresholds to reduce model instability
     during the atmospheric correction.
     4. Improvements to estimate daily net radiation, using FAO-56 as reference
     (Allen et al., 1998).
