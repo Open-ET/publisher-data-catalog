@@ -1,5 +1,4 @@
-TODO: Decide if version in ID should be "v1_0" or "v1" (the current collection ID is just "v1")
-local id = 'projects/openet/assets/reference_et/conus/gridmet/monthly/v1_0';
+local id = 'projects/openet/assets/reference_et/conus/gridmet/monthly/v1';
 local subdir = 'OpenET';
 local version = '1.0';
 

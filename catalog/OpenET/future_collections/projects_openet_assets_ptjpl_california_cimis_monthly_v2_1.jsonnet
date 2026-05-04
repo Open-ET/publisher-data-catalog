@@ -36,9 +36,7 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
     is estimated following a surface energy balance approach of Abdelrady
     et al. (2016) that is specific for water bodies by accounting for water
     heat flux as opposed to soil heat flux.
-
-    [Additional information](https://etdata.org/methods/)
-  |||,
+  ||| + collection_v2_1,
   license: license.id,
   links: ee.standardLinks(subdir, id),
   'gee:categories': ['water-vapor'],

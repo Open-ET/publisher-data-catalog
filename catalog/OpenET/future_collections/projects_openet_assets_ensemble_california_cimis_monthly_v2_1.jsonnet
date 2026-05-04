@@ -30,9 +30,7 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
     produce ET data at a pixel size of 30 meters by 30 meters (0.22 acres per
     pixel). The monthly ET dataset provides data on total ET by month as an
     equivalent depth of water in millimeters.
-
-    [Additional information](https://etdata.org/methods/)
-  |||,
+  ||| + collection_v2_1,
   license: license.id,
   links: ee.standardLinks(subdir, id),
   'gee:categories': ['water-vapor'],

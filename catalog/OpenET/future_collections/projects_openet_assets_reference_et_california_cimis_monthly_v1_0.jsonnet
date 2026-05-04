@@ -1,4 +1,4 @@
-local id = 'projects/openet/assets/reference_et/conus/gridmet/daily/v1';
+local id = 'projects/openet/assets/reference_et/california/cimis/monthly/v1';
 local subdir = 'OpenET';
 local version = '1.0';
 
@@ -15,19 +15,18 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
 
 {
   id: id,
-  title: 'OpenET Bias Corrected GRIDMET Daily Reference Evapotranspiration v' + version,
+  title: 'OpenET Spatial CIMIS Monthly Reference Evapotranspiration v' + version,
   version: version,
   description: |||
-    TODO: Write a description!
+    TODO: Write a description of the dataset
 
     [Additional information](https://etdata.org/methods/)
   |||,
   license: license.id,
   links: ee.standardLinks(subdir, id),
   keywords: [
-    'conus',
     'evapotranspiration',
-    'gridmet_derived',
+    'monthly',
     'openet',
     'water',
   ],
@@ -35,7 +34,7 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
     ee.producer_provider('OpenET, Inc.', 'https://etdata.org/'),
     ee.host_provider(self_ee_catalog_url),
   ],
-  extent: ee.extent(-126, 25, -66, 50, '1979-01-01T00:00:00Z', null),
+  extent: ee.extent(-124.5, 32.0, -114.0, 42.0, '2003-10-01T00:00:00Z', null),
   summaries: {
     'gee:schema': [
       {
@@ -44,18 +43,43 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
         type: ee_const.var_type.string,
       },
       {
+        name: 'early',
+        description: 'Number of "early" status daily images used to generate monthly total"',
+        type: ee_const.var_type.string,
+      },
+      {
         name: 'eto_source_data_version',
-        description: 'Monthly bias correction ratio version',
+        description: 'Bias correction ratio version summary of the daily source "eto" images',
         type: ee_const.var_type.string,
       },
       {
         name: 'etr_source_data_version',
-        description: 'Monthly bias correction ratio version',
+        description: 'Bias correction ratio version summary of the daily source "etr" images',
         type: ee_const.var_type.string,
       },
       {
+        name: 'permanent',
+        description: 'Number of "permanent" status daily images used to generate monthly total"',
+        type: ee_const.var_type.string,
+      },
+      {
+        name: 'provisional',
+        description: 'Number of "provisional" status daily images used to generate monthly total"',
+        type: ee_const.var_type.string,
+      },
+      {
+        name: 'scale_factor_eto',
+        description: 'Scaling factor that should be applied to the "eto" band',
+        type: ee_const.var_type.double,
+      },
+      {
+        name: 'scale_factor_etr',
+        description: 'Scaling factor that should be applied to the "etr" band',
+        type: ee_const.var_type.double,
+      },
+      {
         name: 'status',
-        description: 'GRIDMET daily build status: "early", "permanent", or "provisional"',
+        description: '"permanent" or "provisional"',
         type: ee_const.var_type.string,
       },
       {
@@ -85,11 +109,11 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
     ],
     'gee:visualizations': [
       {
-        display_name: 'OpenET Bias Corrected GRIDMET Monthly Grass Reference ET',
+        display_name: 'OpenET Spatial CIMIS Monthly Grass Reference ET',
         lookat: {
-          lat: 38,
-          lon: -100,
-          zoom: 5,
+          lat: 37,
+          lon: -119,
+          zoom: 7,
         },
         image_visualization: {
           band_vis: {
@@ -119,7 +143,7 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
    ],
   'gee:interval': {
     type: 'cadence',
-    unit: 'day',
+    unit: 'month',
     interval: 1,
   },
   'gee:status': 'beta',

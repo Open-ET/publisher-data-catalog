@@ -70,9 +70,7 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
     the atmospherically corrected surface reflectance and LST from Landsat
     Collection 2 Level 2, with fallback to Collection 2 Level 1 when needed for
     near real-time estimates.
-
-    [Additional information](https://etdata.org/methods/)
-  |||,
+  ||| + collection_v2_1,
   license: license.id,
   links: ee.standardLinks(subdir, id),
   'gee:categories': ['water-vapor'],
