@@ -225,7 +225,7 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
         lookat: {
           lat: 37,
           lon: -119,
-          zoom: 7,
+          zoom: 6,
         },
         image_visualization: {
           band_vis: {

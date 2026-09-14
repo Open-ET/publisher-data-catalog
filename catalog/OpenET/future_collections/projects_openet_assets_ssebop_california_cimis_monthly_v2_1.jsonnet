@@ -191,9 +191,9 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
       {
         display_name: 'OpenET SSEBop Monthly ET',
         lookat: {
-          lat: 37.0,
-          lon: -119.0,
-          zoom: 7,
+          lat: 37,
+          lon: -119,
+          zoom: 6,
         },
         image_visualization: {
           band_vis: {
