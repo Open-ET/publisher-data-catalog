@@ -93,7 +93,7 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
         },
         image_visualization: {
           band_vis: {
-            min: [500],
+            min: [600],
             max: [2200],
             palette: [
               '9e6212', 'ac7d1d', 'ba9829', 'c8b434', 'd6cf40', 'bed44b',
@@ -107,14 +107,25 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
       },
     ],
   },
-  # TODO: Add a DOI once we have a citation
-  'sci:doi': ,
+  'sci:doi': 10.5281/zenodo.18673483,
   'sci:citation': |||
-    TODO: Add a citation
+    Volk, J., Dunkerly, C., Majumdar, S., Huntington, J., Minor, B., Kim, Y.,
+    Morton, C., ReVelle, P., Kilic, A., Melton, F., Allen, R., Pearson, C.,
+    Purdy, A., and Caldwell, T. (2026). Assessing and correcting bias in
+    gridded reference evapotranspiration over agricultural lands across the
+    contiguous United States. Agricultural Water Management, 333, 110647.
+    [10.1016/j.agwat.2026.110647](https://doi.org/10.1016/j.agwat.2026.110647)
   |||,
   'sci:publications': [
     {
-      TODO: Add some publications
+      citation: |||
+        Dunkerly, C., Volk, J., Majumdar, S., Huntington, J., Allen, R.,
+        Pearson, C., Kim, Y., Morton, C., Minor, B., ReVelle, P., Kilic, A.,
+        Melton, F., Purdy, A., and Caldwell, T. (2026). A Benchmark Dataset of
+        Agricultural Weather Stations over the Contiguous United States for
+        Evapotranspiration Applications. Scientific Data, 13(1), 1182.
+        [10.1038/s41597-026-07819-7](https://doi.org/10.1038/s41597-026-07819-7)
+      |||,
     },
    ],
   'gee:interval': {
