@@ -18,7 +18,15 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
   title: 'OpenET Bias Corrected GRIDMET Monthly Reference Evapotranspiration v' + version,
   version: version,
   description: |||
-    TODO: Write a description of the dataset
+    OpenET Bias-Corrected GRIDMET Monthly Reference Evapotranspiration.
+
+    Provides monthly grass reference (ETo) and alfalfa reference (ETr)
+    evapotranspiration for the contiguous United States. The products apply
+    spatially varying, month-specific correction factors to gridMET reference
+    ET to reduce systematic bias relative to quality-controlled agricultural
+    weather station data. The weather station data used for bias correction
+    are described by in Dunkerly et al. (2026) and the statistical and
+    spatial mapping methods are described by Volk et al. (2026).
 
     [Additional information](https://etdata.org/methods/)
   |||,
