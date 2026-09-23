@@ -25,13 +25,14 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
     spatially varying, month-specific correction factors to gridMET reference
     ET to reduce systematic bias relative to quality-controlled agricultural
     weather station data. The weather station data used for bias correction
-    are described by in Dunkerly et al. (2026) and the statistical and spatial
-    mapping methods are described by Volk et al. (2026).
+    are described by in Dunkerly et al. (2026) and the statistical and
+    spatial mapping methods are described by Volk et al. (2026).
 
     [Additional information](https://etdata.org/methods/)
   |||,
   license: license.id,
   links: ee.standardLinks(subdir, id),
+  'gee:categories': ['water-vapor'],
   keywords: [
     'conus',
     'evapotranspiration',
@@ -115,7 +116,7 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
       },
     ],
   },
-  'sci:doi': 10.5281/zenodo.18673483,
+  'sci:doi': '10.5281/zenodo.18673483',
   'sci:citation': |||
     Volk, J., Dunkerly, C., Majumdar, S., Huntington, J., Minor, B., Kim, Y.,
     Morton, C., ReVelle, P., Kilic, A., Melton, F., Allen, R., Pearson, C.,

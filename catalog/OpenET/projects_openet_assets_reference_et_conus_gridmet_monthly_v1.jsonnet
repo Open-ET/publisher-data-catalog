@@ -32,6 +32,7 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
   |||,
   license: license.id,
   links: ee.standardLinks(subdir, id),
+  'gee:categories': ['water-vapor'],
   keywords: [
     'conus',
     'evapotranspiration',
@@ -141,7 +142,7 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
       },
     ],
   },
-  'sci:doi': 10.5281/zenodo.18673483,
+  'sci:doi': '10.5281/zenodo.18673483',
   'sci:citation': |||
     Volk, J., Dunkerly, C., Majumdar, S., Huntington, J., Minor, B., Kim, Y.,
     Morton, C., ReVelle, P., Kilic, A., Melton, F., Allen, R., Pearson, C.,
