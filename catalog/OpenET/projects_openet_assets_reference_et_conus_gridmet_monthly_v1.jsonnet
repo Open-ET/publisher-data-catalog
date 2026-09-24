@@ -55,7 +55,7 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
       },
       {
         name: 'early',
-        description: 'Number of "early" status daily images used to generate monthly total"',
+        description: 'Number of "early" status daily images used to generate monthly total',
         type: ee_const.var_type.string,
       },
       {
@@ -70,12 +70,12 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
       },
       {
         name: 'permanent',
-        description: 'Number of "permanent" status daily images used to generate monthly total"',
+        description: 'Number of "permanent" status daily images used to generate monthly total',
         type: ee_const.var_type.string,
       },
       {
         name: 'provisional',
-        description: 'Number of "provisional" status daily images used to generate monthly total"',
+        description: 'Number of "provisional" status daily images used to generate monthly total',
         type: ee_const.var_type.string,
       },
       {
